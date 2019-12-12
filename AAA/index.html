@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<body style="background-color:#00969e ;">
+
+        <div class="nav-wrapper">
+            <a href="./index.html" class="brand-logo">Inicio</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+
+            </a>
+
+                <li>
+                    <a href="pages/sobre.html">Sobre Nós</a>
+                </li>
+                <li>
+                    <a href="pages/contato.html">Contato</a>
+       
+        </a>
+
+
+    <div id="side-form" class="sidenav side-form">
+
+        <form class="adiciona-sobremesa container section">
+            <h4>Sugestões</h4>
+            <div class="divider"></div>
+            <div class="input-field">
+                <input placeholder="Novo tipo de arroz" type="text" class="validate">
+               
+            </div>
+            <div class="input-field">
+                <input placeholder="Reclamação" type="text" class="validate">
+          
+               
+             
+                <br>
+            </div>
+            <div class="input-field">
+                <input placeholder="Observações" id="sobremesaLink" type="text" class="validate">
+
+            </div>
+            <div class="input-field center">
+                <button class="btn-small">Enviar</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-storage.js"></script>
+    <script>
+    var firebaseConfig = {
+        apiKey: "AIzaSyDGlxdWY0E3PdT6u050TJDTzHJ7UiFErGg",
+        authDomain: "des-bonbons-dcc35.firebaseapp.com",
+        databaseURL: "https://des-bonbons-dcc35.firebaseio.com",
+        projectId: "des-bonbons-dcc35",
+        storageBucket: "des-bonbons-dcc35.appspot.com",
+        messagingSenderId: "972950448934",
+        appId: "1:972950448934:web:db59a364fff753dbd22fe7"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    var uploader = document.getElementById('uploader');
+    var fileButton = document.getElementById('fileButton');
+    fileButton.addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        file.name = document.getElementById("fileButton").value = this.value.substring(12);
+        console.log(file.name);
+        var metadata = {
+            contentType: 'image/jpeg'
+        };
+        var storageRef = firebase.storage().ref();
+        var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
+            function(snapshot) {
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: 
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: 
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            function(error) {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        break;
+                    case 'storage/canceled':
+                        break;
+                    case 'storage/unknown':
+                        break;
+                }
+            },
+            function() {
+                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                    console.log('File available at', downloadURL);
+                });
+            });
+    });
+            <img class= src="índice.jpeg"
+    </script>
+    <script type="text/javascript" src="./js/app.js"></script>
+    <script type="text/javascript" src="./js/db.js"></script>
+    <script type="text/javascript" src="./js/ui.js"></script>
+</body>
+
+</html>
